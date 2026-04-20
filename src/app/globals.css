@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════
+   AdPilot — Liquid Glass Design System
+   Inspired by iOS 26 Liquid Glass + Artlist.io cinematic feel
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* Glass surfaces — white overlays for dark mode */
+  --glass-1: rgba(255, 255, 255, 0.03);
+  --glass-2: rgba(255, 255, 255, 0.05);
+  --glass-3: rgba(255, 255, 255, 0.08);
+  --glass-4: rgba(255, 255, 255, 0.12);
+
+  /* Luminous borders (iOS specular highlights) */
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-strong: rgba(255, 255, 255, 0.16);
+  --glass-border-accent: rgba(255, 255, 255, 0.24);
+
+  /* Shadows for depth */
+  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --glass-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.50);
+
+  /* Blur amounts */
+  --blur-sm: 12px;
+  --blur-md: 20px;
+  --blur-lg: 28px;
+}
+
+/* Body — atmospheric gradient background for glass refraction */
+html, body {
+  background-color: #09090b;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 15% 0%, rgba(59, 130, 246, 0.10), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 100%, rgba(168, 85, 247, 0.08), transparent 50%),
+    radial-gradient(ellipse 50% 30% at 50% 50%, rgba(236, 72, 153, 0.04), transparent 60%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular numbers for stats */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLASS COMPONENTS
+   ═══════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Base glass — for most cards */
+  .glass {
+    background: var(--glass-2);
+    backdrop-filter: blur(var(--blur-md)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--blur-md)) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+  }
+
+  /* Strong glass — for elevated cards, sidebar */
+  .glass-strong {
+    background: var(--glass-3);
+    backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+    border: 1px solid var(--glass-border-strong);
+    box-shadow: var(--glass-shadow-md);
+  }
+
+  /* Hero glass — for featured sections */
+  .glass-hero {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--glass-border-strong);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.50);
+  }
+
+  /* Subtle glass — for sub-cards inside glass containers */
+  .glass-subtle {
+    background: var(--glass-1);
+    backdrop-filter: blur(var(--blur-sm)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--blur-sm)) saturate(140%);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Hover intensifier */
+  .glass-hover {
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .glass-hover:hover {
+    background: var(--glass-4);
+    border-color: var(--glass-border-strong);
+    transform: translateY(-1px);
+    box-shadow: var(--glass-shadow-md);
+  }
+
+  /* ─── Semantic glass with colored tints ─── */
+
+  .glass-danger {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.14) 0%, rgba(239, 68, 68, 0.04) 100%);
+    backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.10);
+  }
+
+  .glass-success {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.14) 0%, rgba(34, 197, 94, 0.04) 100%);
+    backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.10);
+  }
+
+  .glass-warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 100%);
+    backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.10);
+  }
+
+  .glass-info {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.14) 0%, rgba(59, 130, 246, 0.04) 100%);
+    backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.10);
+  }
+
+  .glass-accent {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.14) 0%, rgba(168, 85, 247, 0.04) 100%);
+    backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--blur-md)) saturate(160%);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.10);
+  }
+
+  /* Glass button with glow */
+  .btn-glass {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.95) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+  }
+  .btn-glass:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(37, 99, 235, 1) 100%);
+    box-shadow: 0 6px 28px rgba(59, 130, 246, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+    transform: translateY(-1px);
+  }
+
+  /* Logo glow */
+  .logo-glow {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.50), 0 0 40px rgba(139, 92, 246, 0.30);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE PERFORMANCE — reduce blur on small screens
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  :root {
+    --blur-sm: 8px;
+    --blur-md: 14px;
+    --blur-lg: 20px;
+  }
+}
