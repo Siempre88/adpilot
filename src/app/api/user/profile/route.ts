@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/db/supabase/server'
 
 export async function GET() {
   const auth = await getAuthUser()

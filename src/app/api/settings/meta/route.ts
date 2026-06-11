@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/db/supabase/server'
 
 const GRAPH_API = 'https://graph.facebook.com/v21.0'
 

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { MetaAuthError } from '@/lib/meta-ads'
+import { MetaAuthError } from '@/lib/meta/client'
 
 export function handleApiError(error: unknown, context: string) {
   console.error(`[API ${context}]`, error)

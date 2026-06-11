@@ -51,7 +51,78 @@ export type DeliveryStatus =
   | 'WITH_ISSUES'
 
 // ─── Classification (AdPilot) ───
-export type CampaignClassification = 'winner' | 'at_risk' | 'loser' | 'new'
+// Extended in Día 3. 'new' kept as alias of 'learning' for backwards compat
+// in legacy code paths; new code should use 'learning'.
+export type CampaignClassification =
+  | 'winner'
+  | 'healthy'
+  | 'at_risk'
+  | 'loser'
+  | 'learning'
+  | 'no_data'
+  | 'new'
+
+// ─── Time Windows ───
+export type TimeWindow = 'last_1d' | 'last_3d' | 'last_7d' | 'last_14d'
+
+// ─── Metric Set (output of metrics engine) ───
+// Normalizado, sin divisiones por cero, sin nulls.
+// Es la fuente de verdad para todo lo que sigue (score, signals, recs).
+export interface MetricSet {
+  // Volumen
+  spend: number
+  impressions: number
+  clicks: number
+  reach: number
+
+  // Eficiencia
+  ctr: number          // %
+  cpc: number          // $
+  cpm: number          // $
+  frequency: number
+
+  // Resultado
+  conversions: number
+  revenue: number
+  cpa: number          // 0 si no hay conversiones
+  roas: number         // 0 si no hay revenue
+
+  // Contexto
+  hasRevenue: boolean  // pixel/CAPI tracking detected
+  daysCovered: number
+  isNew: boolean       // bajo umbral de spend
+}
+
+// ─── Signal (señal detectada por reglas) ───
+export type SignalType =
+  | 'creative_fatigue'
+  | 'zombie_campaign'
+  | 'high_cpa'
+  | 'low_ctr'
+  | 'ready_to_scale'
+  | 'landing_problem'
+  | 'audience_saturation'
+  | 'overspend'
+  | 'underspend'
+  | 'learning_limited'
+
+export type SignalSeverity = 'critical' | 'high' | 'medium' | 'low'
+
+export interface Signal {
+  type: SignalType
+  severity: SignalSeverity
+  confidence: RecommendationConfidence
+  explanation: string                  // Frase corta accionable, no descriptiva
+  impact_value: number                 // $ por día (estimado)
+  impact_type: 'opportunity' | 'loss_prevention'
+  triggered_metrics: Record<string, number | string>
+}
+
+// ─── Score Result (output of score engine) ───
+export interface ScoreResult {
+  score: number                        // 0–100
+  confidence: RecommendationConfidence
+}
 
 // ─── Alert Types ───
 export type AlertSeverity = 'critical' | 'high' | 'medium' | 'low'
@@ -147,6 +218,9 @@ export type RecommendationAction =
   | 'REVIEW_CREATIVE'
   | 'REVIEW_TARGETING'
   | 'WAIT'
+  // Día 3 additions:
+  | 'FIX_LANDING'
+  | 'REDUCE_BUDGET'
 
 export type RecommendationConfidence = 'low' | 'medium' | 'high'
 
@@ -163,6 +237,22 @@ export interface CampaignRecommendation {
   priority: 'urgent' | 'opportunity' | 'risk' | 'info'
   confidence: RecommendationConfidence
   explanation: RecommendationExplanation
+}
+
+// ─── Día 3 Recommendation (signals → actionable output) ───
+export type RecommendationUrgency = 'now' | 'today' | 'this_week' | 'no_rush'
+
+export interface Recommendation {
+  action: RecommendationAction
+  reason: string                        // Frase corta accionable
+  expectedImpact: {
+    type: 'opportunity' | 'loss_prevention'
+    value: number                       // $/día
+    description: string
+  }
+  urgency: RecommendationUrgency
+  confidence: RecommendationConfidence
+  source_signals: SignalType[]          // qué señales la dispararon
 }
 
 // ─── Creative Lab ───

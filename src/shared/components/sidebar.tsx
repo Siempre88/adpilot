@@ -2,30 +2,26 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { usePlan } from '@/shared/lib/plan-context'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/db/supabase/client'
 import {
-  LayoutDashboard,
+  Sun,
+  Compass,
   Megaphone,
-  MessageSquare,
-  Bell,
   Sparkles,
   Settings,
   Zap,
-  Zap as ZapIcon,
   Crown,
   LogOut,
 } from 'lucide-react'
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Today', href: '/today', icon: Sun },
+  { name: 'Recomendaciones', href: '/recommendations', icon: Compass },
   { name: 'Campañas', href: '/campaigns', icon: Megaphone },
-  { name: 'Automatización', href: '/automation', icon: ZapIcon },
   { name: 'Creative Lab', href: '/creative-lab', icon: Sparkles },
-  { name: 'Chat IA', href: '/chat', icon: MessageSquare },
-  { name: 'Alertas', href: '/alerts', icon: Bell },
+  { name: 'Analyst', href: '/analyst', icon: Zap },
   { name: 'Configuración', href: '/settings', icon: Settings },
 ]
 
@@ -33,12 +29,6 @@ export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const { isPro } = usePlan()
-  const [pendingCount, setPendingCount] = useState(0)
-
-  useEffect(() => {
-    if (!isPro) return
-    fetch('/api/actions/pending').then(r => r.json()).then(d => setPendingCount(d.actions?.length || 0)).catch(() => {})
-  }, [isPro, pathname])
 
   async function handleLogout() {
     const supabase = createClient()
@@ -82,11 +72,6 @@ export function Sidebar() {
                 isActive ? 'text-blue-300' : 'text-zinc-500 group-hover:text-zinc-300'
               )} />
               <span className="flex-1">{item.name}</span>
-              {item.name === 'Automatización' && pendingCount > 0 && (
-                <span className="rounded-full bg-gradient-to-br from-red-500 to-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-glow-red">
-                  {pendingCount}
-                </span>
-              )}
             </Link>
           )
         })}

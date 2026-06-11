@@ -4,25 +4,30 @@ import { useEffect, useState } from 'react'
 import { cn, formatCurrency, formatPercent } from '@/lib/utils'
 import {
   ArrowUpDown, Loader2, TrendingUp, Pause, Eye, Palette, Target, Clock,
-  Filter, ChevronDown,
+  Filter, ChevronDown, TrendingDown, ExternalLink,
 } from 'lucide-react'
-import type { CampaignWithMetrics, RecommendationAction, RecommendationConfidence } from '@/shared/types/database'
+import type { CampaignClassification, CampaignWithMetrics, RecommendationAction, RecommendationConfidence } from '@/shared/types/database'
 
-const classificationStyles = {
+const classificationStyles: Record<CampaignClassification, { label: string; className: string }> = {
   winner: { label: 'Ganadora', className: 'bg-green-400/10 text-green-400' },
+  healthy: { label: 'Saludable', className: 'bg-emerald-400/10 text-emerald-400' },
   at_risk: { label: 'En Riesgo', className: 'bg-yellow-400/10 text-yellow-400' },
   loser: { label: 'Perdedora', className: 'bg-red-400/10 text-red-400' },
+  learning: { label: 'Aprendiendo', className: 'bg-zinc-400/10 text-zinc-400' },
+  no_data: { label: 'Sin datos', className: 'bg-zinc-500/10 text-zinc-500' },
   new: { label: 'Nueva', className: 'bg-zinc-400/10 text-zinc-400' },
 }
 
 const recIcons: Record<RecommendationAction, typeof TrendingUp> = {
   SCALE: TrendingUp, MONITOR: Eye, PAUSE: Pause,
   REVIEW_CREATIVE: Palette, REVIEW_TARGETING: Target, WAIT: Clock,
+  FIX_LANDING: ExternalLink, REDUCE_BUDGET: TrendingDown,
 }
 
 const recColors: Record<RecommendationAction, string> = {
   SCALE: 'text-green-400', MONITOR: 'text-blue-400', PAUSE: 'text-red-400',
   REVIEW_CREATIVE: 'text-purple-400', REVIEW_TARGETING: 'text-orange-400', WAIT: 'text-zinc-400',
+  FIX_LANDING: 'text-amber-400', REDUCE_BUDGET: 'text-red-300',
 }
 
 const confidenceDots: Record<RecommendationConfidence, { dots: number; color: string; label: string }> = {

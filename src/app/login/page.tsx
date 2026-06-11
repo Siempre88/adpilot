@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, Suspense, type FormEvent } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/db/supabase/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Zap, Loader2, AlertTriangle } from 'lucide-react'
@@ -21,7 +21,7 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/dashboard'
+  const redirect = searchParams.get('redirect') || '/today'
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()

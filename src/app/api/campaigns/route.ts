@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
-import { getCampaignsFromDB } from '@/lib/db-queries'
+import { getCampaignsFromDB } from '@/lib/scoring/db-read'
 import { handleApiError } from '@/lib/api-error'
 
 export async function GET(request: NextRequest) {

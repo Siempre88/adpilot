@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAuthUser, getMetaConnection } from '@/lib/auth'
-import { fullSync, checkSyncRateLimit } from '@/lib/sync-service'
+import { fullSync, checkSyncRateLimit } from '@/lib/sync/sync-service'
 
 export async function POST() {
   const auth = await getAuthUser()

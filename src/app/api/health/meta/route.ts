@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { validateMetaToken } from '@/lib/meta-ads'
+import { validateMetaToken } from '@/lib/meta/client'
 
 export async function GET() {
   const result = await validateMetaToken()

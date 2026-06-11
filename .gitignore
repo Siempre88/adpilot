@@ -40,6 +40,12 @@ yarn-error.log*
 # Vercel
 .vercel
 
+# TypeScript build info
+tsconfig.tsbuildinfo
+
+# Claude Code runtime locks
+.claude/scheduled_tasks.lock
+
 # IDE
 .vscode
 .idea

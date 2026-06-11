@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.66",
+    "@ai-sdk/anthropic": "^3.0.76",
     "@ai-sdk/google": "^3.0.58",
     "@ai-sdk/react": "^3.0.147",
     "@openrouter/ai-sdk-provider": "^2.3.3",

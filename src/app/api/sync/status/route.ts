@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
-import { getSyncStatus } from '@/lib/sync-service'
+import { getSyncStatus } from '@/lib/sync/sync-service'
 
 export async function GET() {
   const auth = await getAuthUser()

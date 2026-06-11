@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/db/supabase/client'
 import { useRouter } from 'next/navigation'
-import { Zap, KeyRound, Loader2, AlertTriangle, CheckCircle2, Eye, EyeOff } from 'lucide-react'
+import { Zap, KeyRound, Loader2, AlertTriangle, CheckCircle2, Eye, EyeOff, ArrowRight } from 'lucide-react'
 
 export default function OnboardingPage() {
   const [token, setToken] = useState('')
@@ -12,7 +12,19 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [syncStatus, setSyncStatus] = useState<string | null>(null)
+  const [skipping, setSkipping] = useState(false)
   const router = useRouter()
+
+  async function handleSkip() {
+    setSkipping(true)
+    const supabase = createClient()
+    const { data: { user: currentUser } } = await supabase.auth.getUser()
+    if (currentUser) {
+      await supabase.from('profiles').update({ onboarding_done: true }).eq('id', currentUser.id)
+    }
+    router.push('/today')
+    router.refresh()
+  }
 
   async function handleConnect(e: FormEvent) {
     e.preventDefault()
@@ -48,7 +60,7 @@ export default function OnboardingPage() {
       await fetch('/api/sync', { method: 'POST' })
       setSyncStatus(null)
 
-      router.push('/dashboard')
+      router.push('/today')
       router.refresh()
     } catch {
       setError('Error de conexión')
@@ -123,11 +135,17 @@ export default function OnboardingPage() {
               </div>
             )}
 
-            <button type="submit" disabled={loading}
+            <button type="submit" disabled={loading || skipping}
               className="btn-glass flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white disabled:opacity-50">
               {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> {syncStatus || 'Conectando...'}</> : <><KeyRound className="h-4 w-4" /> Conectar cuenta</>}
             </button>
           </form>
+
+          <button onClick={handleSkip} disabled={loading || skipping}
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-transparent py-2.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/[0.04] hover:text-white/90 disabled:opacity-50">
+            {skipping ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <>Saltar por ahora <ArrowRight className="h-3.5 w-3.5" /></>}
+          </button>
+          <p className="mt-2 text-center text-[10px] text-white/40">Podrás conectar Meta Ads desde Settings cuando quieras</p>
         </div>
       </div>
     </div>

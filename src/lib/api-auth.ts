@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAuthUser, getMetaConnection } from '@/lib/auth'
-import { setRequestCredentials } from '@/lib/meta-ads'
+import { setRequestCredentials } from '@/lib/meta/client'
 
 /**
  * Authenticate user AND load their Meta credentials.
